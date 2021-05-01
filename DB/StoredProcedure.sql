@@ -66,6 +66,14 @@ BEGIN
 END$$
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS sp_getAllSongs;
+DELIMITER $$
+CREATE PROCEDURE `sp_getAllSongs`()
+BEGIN
+	SELECT * from SongsTbl  ; 
+END$$
+DELIMITER ;
+
 DROP PROCEDURE IF EXISTS sp_getSongsofPL;
 DELIMITER $$
 CREATE PROCEDURE `sp_getSongsofPL`(IN plId smallint)

@@ -32,7 +32,19 @@ src: url('https://netdna.bootstrapcdn.com/bootstrap/3.0.0/fonts/glyphicons-halfl
   <script>
 	$(document).ready(function () {
 		getAllPlayList();
-	});	  
+		fillSongsCombo();
+		fillPlayListCombo();
+
+	});	 
+
+	function fillSongsCombo(){
+
+	}
+
+	function fillPlayListCombo(){
+
+	}
+
   // Handle click event on Update button
   function updateClick() {
 
@@ -44,9 +56,17 @@ src: url('https://netdna.bootstrapcdn.com/bootstrap/3.0.0/fonts/glyphicons-halfl
     	createPlayList(playlist);
   }
   }
-  // Handle click event on Add button
-  function addClick() {
+  // Handle click event on Update button
+  function updateSongClick() {
 
+	// Build product object from inputs
+	songs = new Array();
+	songs[0] = $("#songname").val();
+	songs[1] = $("#singer").val();
+	songs[2] = 0;
+  	if ($("#updateButton").text().trim() == "Add") {
+    	createSong(songs);
+  }
   }
   var playlist = {
 		  id: 0,
@@ -70,6 +90,27 @@ src: url('https://netdna.bootstrapcdn.com/bootstrap/3.0.0/fonts/glyphicons-halfl
 	    msg += "Message" + request.responseJSON.Message + "\n";
 	  }
 	  alert(msg);
+	}
+
+	function getAllSongs() {
+	  // Call Web API to get a list of Product
+	  $.ajax({
+	    url: 'http://localhost:8081/api/v2/getAllSongs',
+	    type: 'GET',
+		headers: {  'Access-Control-Allow-Origin': 'http://localhost:8081',
+		'Access-Control-Allow-Credentials': 'true',
+		'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+		'Access-Control-Allow-Headers': 'X-PINGOTHER, Content-Type'
+	},	
+		dataType: 'json',
+		crossDomain: true,
+	    success: function (songlists) {
+	      playListSuccess(songlists);
+	    },
+	    error: function (request, message, error) {
+	      handleException(request, message, error);
+	    }
+	  });
 	}
   
   function getAllPlayList() {
@@ -100,6 +141,45 @@ src: url('https://netdna.bootstrapcdn.com/bootstrap/3.0.0/fonts/glyphicons-halfl
 	    playAddRow(playlist);
 	  });
 	}
+
+	function songAddRow(songs) {
+	  // Check if <tbody> tag exists, add one if not
+	   if ($("#songsTable tbody").length == 0) {
+	    $("#songsTable").append("<tbody></tbody>");
+	   }
+	   // Append row to <table>
+	   $("#songsTable tbody").append(
+		songBuildTableRow(songs));
+	 }
+
+	 function songBuildTableRow(playlist) {
+  var ret =
+    "<tr>" +
+	 "<td>" + songs[0] + "</td>" +
+	 "<td>" + songs[1] + "</td>" +
+	 "<td>" + "<button type='button' " +
+     "onclick='deletePlayList("+ this +");' " +
+     "class='btn btn-default' " +
+     "data-id='" + songs[2] + "'>" +
+     "<span class='glyphicon glyphicon-remove' />"
+   + "</button>" + "</td>"
+    "</tr>";
+  return ret;
+}
+
+	 function playlistBuildTableRow(playlist) {
+  var ret =
+    "<tr>" +
+     "<td>" + playlist[0] + "</td>" +
+	 "<td>" + "<button type='button' " +
+     "onclick='deletePlayList("+ this +");' " +
+     "class='btn btn-default' " +
+     "data-id='" + playlist[1] + "'>" +
+     "<span class='glyphicon glyphicon-remove' />"
+   + "</button>" + "</td>"
+    "</tr>";
+  return ret;
+}
 
   function playAddRow(playlist) {
 	  // Check if <tbody> tag exists, add one if not
@@ -196,6 +276,12 @@ function playlistAddSuccess(playlist) {
   formClear();
 }
 
+function songsAddSuccess(songs) {
+
+//songAddRow(songs);
+formClear();
+}
+
 function formClear() {
   $("#playlistname").val("");
 }
@@ -219,15 +305,15 @@ function addClick() {
 	  });
 	}
   
-  function createSong(product) {
+  function createSong(songs) {
 	  $.ajax({
-	    url: "/api/v2/createSong",
+	    url: "http://localhost:8081/api/v2/createSong",
 	    type: 'POST',
 	    contentType: 
 	       "application/json;charset=utf-8",
-	    data: JSON.stringify(product),
-	    success: function (product) {
-	      productAddSuccess(product);
+	    data: JSON.stringify(songs),
+	    success: function (songs) {
+	      songsAddSuccess(songs);
 	    },
 	    error: function (request, message, error) {
 	      handleException(request, message, error);
@@ -305,70 +391,183 @@ function addClick() {
 </head>
 <body>
 	<div class="container">
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-6">
-        <h2>Media Player</h2>
-      </div>
-    </div>
-  </div>
-	
- 
-  
-  <div class="row">
-	<div class="col-sm-6">
-	  <div class="panel panel-primary">
-		<div class="panel-heading">
-		  PlayList Name
-		</div>
-		<div class="panel-body">
 
-			<table>
-				<tbody>
-					<tr>
-						<td style="width: 300px;">
-							<div class="form-group">
-								<label for="playlistname">PlayList Name</label>
-								<input type="text" id="playlistname" class="form-control" />
-							  </div>
-						</td>
-					</tr>
-				</tbody>
-				
-				</table>
-						
-				<div class="row">
-				  <div class="col-xs-12">
-					<button type="button" id="updateButton" class="btn btn-primary" onclick="updateClick();">
-					  Add
-				   </button>
-				  </div>
+		<div class="container">
+			<div class="row">
+			  <div class="col-sm-6">
+				<h2>Media Player</h2>
+			  </div>
+			</div>
+		  </div>
+		  
+		  <div class="row">
+			<div class="col-sm-6">
+			  <div class="panel panel-primary">
+				<div class="panel-heading">
+				  PlayList Name
 				</div>
+				<div class="panel-body">
+		
+					<table>
+						<tbody>
+							<tr>
+								<td style="width: 300px;">
+									<div class="form-group">
+										<label for="playlistname">PlayList Name</label>
+										<input type="text" id="playlistname" class="form-control" />
+									  </div>
+								</td>
+							</tr>
+						</tbody>
+						
+						</table>
+								
+						<div class="row">
+						  <div class="col-xs-12">
+							<button type="button" id="updateButton" class="btn btn-primary" onclick="updateClick();">
+							  Add
+						   </button>
+						  </div>
+						</div>
+				</div>
+				<div class="panel-footer">
+				</div>
+			 </div>
+			</div>
+		  </div>
+		  
+	
+		  
+		<div class="row">
+		  <div class="col-sm-6">
+			<div class="panel panel-primary">
+			  <div class="panel-heading">
+				Songs Name
+			  </div>
+			  <div class="panel-body">
+	  
+				  <table>
+					  <tbody>
+						  <tr>
+							  <td style="width: 300px;">
+								  <div class="form-group">
+									  <label for="songname">Songs Name</label>
+									  <input type="text" id="songname" class="form-control" />
+									</div>
+
+									<div class="form-group">
+										<label for="singer">Singer</label>
+										<input type="text" id="singer" class="form-control" />
+									  </div>
+							  </td>
+						  </tr>
+					  </tbody>
+					  
+					  </table>
+							  
+					  <div class="row">
+						<div class="col-xs-12">
+						  <button type="button" id="updateButton" class="btn btn-primary" onclick="updateSongClick();">
+							Add
+						 </button>
+						</div>
+					  </div>
+			  </div>
+			  <div class="panel-footer">
+			  </div>
+		   </div>
+		  </div>
 		</div>
-		<div class="panel-footer">
-		</div>
-	 </div>
-	</div>
-  </div>
-  
-<div class="row">
-  <div class="col-sm-6">
-    <table id="productTable" class="table table-bordered table-condensed table-striped">
-      <thead>
-		<tr>
-			PlayList
-		</tr>	
-        <tr>
-		  <th>Name</th>
-		  <th>Delete</th>
-        </tr>
-	  </thead>
-    </table>
-  </div>
+
+		<div class="row">
+			<div class="col-sm-6">
+			  <div class="panel panel-primary">
+				<div class="panel-heading">
+				  PlayList Songs Name
+				</div>
+				<div class="panel-body">
+		
+					<table>
+						<tbody>
+							<tr>
+								<td style="width: 300px;">
+									<div class="form-group">
+									<label for="cmbplaylist">Choose a playlist:</label>
+									<select name="playlist" id="cmbplaylist">
+									  
+									</select>
+									</div>
+									
+									<div class="form-group">
+									<label for="cmbsong">Choose a Song:</label>
+									<select name="song" id="cmbsong">
+									  
+									</select>
+									</div>
+									
+									
+								</td>
+							</tr>
+						</tbody>
+						
+						</table>
+								
+						<div class="row">
+						  <div class="col-xs-12">
+							<button type="button" id="updateButton" class="btn btn-primary" onclick="updateSongClick();">
+							  Add
+						   </button>
+						  </div>
+						</div>
+				</div>
+				<div class="panel-footer">
+				</div>
+			 </div>
+			</div>
+		  </div>
+
+		<div class="row">
+			<table  style="width:100%;">
+
+				<tr>
+					<td style="width:50%;">
+						<div class="col-sm-6">
+							<table id="productTable" class="table table-bordered table-condensed table-striped">
+							  <thead>
+								<tr>
+									PlayList
+								</tr>	
+								<tr>
+								  <th>Name</th>
+								  <th>Delete</th>
+								</tr>
+							  </thead>
+							</table>
+						  
+						</div>
+					</td>
+					<td style="width:50%;"> 
+						<div class="col-sm-6">
+							<table id="songsTable" class="table table-bordered table-condensed table-striped">
+							  <thead>
+								<tr>
+									Songs
+								</tr>	
+								<tr>
+								  <th>PlayListName</th>
+								  <th>SongName</th>
+								  <th>Singer</th>
+								  <th>Delete</th>
+								</tr>
+							  </thead>
+							</table>
+						  
+						</div>
+					</td>
+				</tr>
+			</table>
+			</div>
 </div>
-
-
-
-</div>
+     </div>
 </body>
 </html>

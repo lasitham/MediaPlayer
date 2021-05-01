@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.staxrt.tutorial.model.PlayList;
 import com.staxrt.tutorial.model.PlayListWithSongs;
+import com.staxrt.tutorial.model.SongsModel;
 
 @Repository
 public class PlayListDao {
@@ -19,6 +20,12 @@ public class PlayListDao {
 	public List<PlayList> getPlayListInfo(){
 		System.out.println("PlayListDao");
 		return em.createNamedStoredProcedureQuery("playlist").getResultList();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<SongsModel> getAllSongs(){
+		System.out.println("PlayListDao");
+		return em.createNamedStoredProcedureQuery("songlist").getResultList();
 	}
 	
 	@SuppressWarnings("unchecked")

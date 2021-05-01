@@ -47,6 +47,17 @@ public class PlayListController {
 	}
 	
 	/**
+	 * Api for getting all play list.
+	 * @return : Object of PlayList class that contain data.
+	 */
+	@GetMapping("/getAllSongs")
+	public List<SongsModel> getAllSongs(){
+		return dao.getAllSongs();
+		
+	
+	}
+	
+	/**
 	 * Api for getting all play list by providing specific id.
 	 * @param id:Id for playlist
 	 * @return: Object of PlayList class that contain data.
