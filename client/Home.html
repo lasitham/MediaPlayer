@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <link href="css/bootstrap.min.css" rel="stylesheet" />
+  <script src="js/jquery-3.6.0.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  
+  <script>
+  // Handle click event on Update button
+  function updateClick() {
+  }
+  // Handle click event on Add button
+  function addClick() {
+  }
+  var playlist = {
+		  id: 0,
+		  name: ""
+  };
+  var songList = {
+		  id: 0,
+		  songname: "",
+		  singer: ""
+  };
+  var playlistSongId = {
+		  playlistId: 0,
+		  songId: 0
+  };
+  
+  function handleException(request, message, error) {
+	  var msg = "";
+	  msg += "Code: " + request.status + "\n";
+	  msg += "Text: " + request.statusText + "\n";
+	  if (request.responseJSON != null) {
+	    msg += "Message" + request.responseJSON.Message + "\n";
+	  }
+	  alert(msg);
+	}
+  
+  function getAllPlayList() {
+	  // Call Web API to get a list of Product
+	  $.ajax({
+	    url: 'http://localhost:8081/api/v2/getAllPlayList',
+	    type: 'GET',
+		headers: {  'Access-Control-Allow-Origin': 'http://localhost:8081',
+		'Access-Control-Allow-Credentials': 'true',
+		'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+		'Access-Control-Allow-Headers': 'X-PINGOTHER, Content-Type'
+	},	
+		dataType: 'json',
+		crossDomain: true,
+	    success: function (playlists) {
+	      playListSuccess(playlists);
+	    },
+	    error: function (request, message, error) {
+	      handleException(request, message, error);
+	    }
+	  });
+	}
+  
+  function playListSuccess(playlists) {
+	  // Iterate over the collection of data
+	  $.each(playlists, function (index, playlist) {
+	    // Add a row to the Product table
+	    playAddRow(playlist);
+	  });
+	}
+  
+  function playAddRow(playlist) {
+	  // Check if <tbody> tag exists, add one if not
+	   if ($("#productTable tbody").length == 0) {
+	    $("#productTable").append("<tbody></tbody>");
+	   }
+	   // Append row to <table>
+	   $("#productTable tbody").append(
+		playlistBuildTableRow(playlist));
+	 }
+function playlistBuildTableRow(playlist) {
+  var ret =
+    "<tr>" +
+     "<td>" + playlist[0] + "</td>" +
+     "<td>" + playlist[1]+ "</td>"
+    "</tr>";
+  return ret;
+}
+  function getPlayListById(ctl) {
+	    // Get product id from data- attribute
+	    var id = $(ctl).data("id");
+	    
+	    // Store product id in hidden field
+	    $("#productid").val(id);
+	    
+	    // Call Web API to get a list of Products
+	    $.ajax({
+	        url: "/api/v2/getPlayListById" + id,
+	        type: 'GET',
+	        dataType: 'json',
+	        success: function (product) {
+	            productToFields(product);
+	            
+	            // Change Update Button Text
+	            $("#updateButton").text("Update");
+	        },
+	        error: function (request, message, error) {
+	            handleException(request, message, error);
+	        }
+	    });
+	}
+  
+  function getSongsOfPL(ctl) {
+	    // Get product id from data- attribute
+	    var id = $(ctl).data("id");
+	    
+	    // Store product id in hidden field
+	    $("#productid").val(id);
+	    
+	    // Call Web API to get a list of Products
+	    $.ajax({
+	        url: "/api/v2/getSongsOfPL" + id,
+	        type: 'GET',
+	        dataType: 'json',
+	        success: function (product) {
+	            productToFields(product);
+	            
+	            // Change Update Button Text
+	            $("#updateButton").text("Update");
+	        },
+	        error: function (request, message, error) {
+	            handleException(request, message, error);
+	        }
+	    });
+	}
+  
+  function getPLWithSongs(ctl) {
+	   
+	    // Call Web API to get a list of Products
+	    $.ajax({
+	        url: "/api/v2/getPLWithSongs", 
+	        type: 'GET',
+	        dataType: 'json',
+	        success: function (product) {
+	            productToFields(product);
+	            
+	            // Change Update Button Text
+	            $("#updateButton").text("Update");
+	        },
+	        error: function (request, message, error) {
+	            handleException(request, message, error);
+	        }
+	    });
+	}
+  
+  
+  function createPlayList(product) {
+	  $.ajax({
+	    url: "/api/v2/createPlayList",
+	    type: 'POST',
+	    contentType: 
+	       "application/json;charset=utf-8",
+	    data: JSON.stringify(product),
+	    success: function (product) {
+	      productAddSuccess(product);
+	    },
+	    error: function (request, message, error) {
+	      handleException(request, message, error);
+	    }
+	  });
+	}
+  
+  function createSong(product) {
+	  $.ajax({
+	    url: "/api/v2/createSong",
+	    type: 'POST',
+	    contentType: 
+	       "application/json;charset=utf-8",
+	    data: JSON.stringify(product),
+	    success: function (product) {
+	      productAddSuccess(product);
+	    },
+	    error: function (request, message, error) {
+	      handleException(request, message, error);
+	    }
+	  });
+	}
+
+  function addSongToPL(product) {
+	  $.ajax({
+	    url: "/api/v2/addSongToPL",
+	    type: 'POST',
+	    contentType: 
+	       "application/json;charset=utf-8",
+	    data: JSON.stringify(product),
+	    success: function (product) {
+	      productAddSuccess(product);
+	    },
+	    error: function (request, message, error) {
+	      handleException(request, message, error);
+	    }
+	  });
+	}
+  
+  function deleteSong(ctl) {
+	    var id = $(ctl).data("id");
+	            
+	    $.ajax({
+	        url: "/api/v2/deleteSong" + id,
+	        type: 'DELETE',
+	        success: function (product) {
+	            $(ctl).parents("tr").remove();
+	        },
+	        error: function (request, message, error) {
+	            handleException(request, message, error);
+	        }
+	    });
+	}
+  
+  function deletePlayList(ctl) {
+	    var id = $(ctl).data("id");
+	            
+	    $.ajax({
+	        url: "/api/v2/deletePlayList" + id,
+	        type: 'DELETE',
+	        success: function (product) {
+	            $(ctl).parents("tr").remove();
+	        },
+	        error: function (request, message, error) {
+	            handleException(request, message, error);
+	        }
+	    });
+	}
+  
+  function removeSongFrmPL(ctl) {
+	    var id = $(ctl).data("id");
+	            
+	    $.ajax({
+	        url: "/api/v2/removeSongFrmPL" + id,
+	        type: 'DELETE',
+	        success: function (product) {
+	            $(ctl).parents("tr").remove();
+	        },
+	        error: function (request, message, error) {
+	            handleException(request, message, error);
+	        }
+	    });
+	}
+  
+</script>
+
+
+
+</head>
+<body onload="getAllPlayList()">
+
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6">
+        <h2>Media Player</h2>
+      </div>
+    </div>
+  </div>
+	
+<div class="row">
+  <div class="col-sm-6">
+    <table id="productTable" class="table table-bordered table-condensed table-striped">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-6">
+    <button type="button" id="addButton" class="btn btn-primary" onclick="addClick();">Add Product</button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-6">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        Product Information
+      </div>
+      <div class="panel-body">
+      </div>
+      <div class="panel-footer">
+      </div>
+   </div>
+  </div>
+</div>
+
+<div class="form-group">
+  <label for="productname">Product Name</label>
+  <input type="text" id="productname" class="form-control" />
+</div>
+<div class="form-group">
+  <label for="introdate">Introduction Date</label>
+  <input type="date" id="introdate" class="form-control" />
+</div>
+<div class="form-group">
+  <label for="url">URL</label>
+  <input type="url" id="url" class="form-control" />
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <button type="button" id="updateButton" class="btn btn-primary" onclick="updateClick();">
+      Add
+   </button>
+  </div>
+</div>
+
+
+</body>
+</html>
