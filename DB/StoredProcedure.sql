@@ -87,6 +87,6 @@ DROP PROCEDURE IF EXISTS sp_getPLWithSongs;
 DELIMITER $$
 CREATE PROCEDURE `sp_getPLWithSongs`()
 BEGIN
-	SELECT S.songName,S.singer,S.songId,PL.name as 'PlayListName' from PlayListSongsTbl as P  join SongsTbl as S    ON P.songId = S.songId join PlayListTbl as PL on P.playlistId=PL.playlistId; 
+	SELECT S.songName,S.singer,S.songId,PL.name as 'PlayListName',PL.playlistId from PlayListSongsTbl as P  join SongsTbl as S    ON P.songId = S.songId join PlayListTbl as PL on P.playlistId=PL.playlistId; 
 END$$
 DELIMITER ;
