@@ -9,5 +9,5 @@ spring.datasource.password=MySql123!
 
 3. Run server MediaPlayer/server/spring-boot-rest-api-music-player/ .
 4. Open client Home.html
-5. Replace  your url  http://localhost:8081
+5. Replace  your url in place of http://localhost:8081
 6. Run client MediaPlayer/client/
