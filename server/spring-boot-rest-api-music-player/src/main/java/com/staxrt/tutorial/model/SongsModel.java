@@ -6,6 +6,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.Value;
 
+/**
+ * Class for holding song details.
+ * @author lasithamukkunnathu
+ *
+ */
 @Entity
 @Table
 @Getter

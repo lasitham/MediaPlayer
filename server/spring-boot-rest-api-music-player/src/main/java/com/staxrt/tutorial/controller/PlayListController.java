@@ -53,7 +53,6 @@ public class PlayListController {
 	@GetMapping("/getAllSongs")
 	public List<SongsModel> getAllSongs(){
 		return dao.getAllSongs();
-		
 	
 	}
 	
@@ -78,42 +77,70 @@ public class PlayListController {
 		return dao.getPLWithSongs();
 	}
 	
+	/**
+	 * Api for getting songs of Playlist.
+	 * @return: Object of PlayList class that contain data.
+	 */
 	@GetMapping("/getSongsOfPL/{id}")
 	public List<PlayListWithSongs> getSongsOfPL(@PathVariable int id){
 		System.out.println("PlayListController2");
 		return dao.getSongsOfPL(id);
 	}
 	
+	/**
+	 * Api for creating a playlist.
+	 * @return: Object of PlayList class that contain data.
+	 */
 	@PostMapping("/createPL")
 	public boolean createPlayList(@RequestBody String name){
 		System.out.println("PlayListController2");
 		return dao.createPlayList(name);	
 	}
 	
+	/**
+	 * Api for deleting a playlist.
+	 * @return: Object of PlayList class that contain data.
+	 */
 	@DeleteMapping("/deletePlayList")
 	public boolean deletePlayList(int id){
 		System.out.println("PlayListController2");
 		return dao.deletePlayList(id);	
 	}
-
+	
+	/**
+	 * Api for create song list.
+	 * @return: Object of PlayList class that contain data.
+	 */
 	@PostMapping("/createSong")
 	public boolean createSong(@RequestBody SongsModel smodel){
 		System.out.println("PlayListController2");
 		return dao.createSong(smodel.songName,smodel.singer);	
 	}
 	
+	/**
+	 * Api for deleting song from list.
+	 * @return: Object of PlayList class that contain data.
+	 */
 	@DeleteMapping("/deleteSong")
 	public boolean deleteSong(int id){
 		System.out.println("PlayListController2");
 		return dao.deleteSong(id);	
 	}
 	
+	/**
+	 * Api for add songs to playlist.
+	 * @return: Object of PlayList class that contain data.
+	 */
 	@PostMapping("/addSongToPL")
 	public boolean addSongToPL(@RequestBody SongPlayListModel spModel){
 		System.out.println("PlayListController2");
 		return dao.addSongToPL(spModel.playlistId,spModel.songId);	
 	}
 	
+	/**
+	 * Api for remove songs to playlist.
+	 * @return: Object of PlayList class that contain data.
+	 */
 	@DeleteMapping("/removeSongFrmPL")
 	public boolean removeSongFrmPL(int playListId, int songId){
 		System.out.println("PlayListController2");

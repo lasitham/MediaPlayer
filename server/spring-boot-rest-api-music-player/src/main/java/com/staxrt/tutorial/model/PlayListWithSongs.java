@@ -1,10 +1,14 @@
 package com.staxrt.tutorial.model;
 
 import javax.persistence.*;
-
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Class for holding Play list with songs.
+ * @author lasithamukkunnathu
+ *
+ */
 @Entity
 @Table
 @Getter

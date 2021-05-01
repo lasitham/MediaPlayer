@@ -7,6 +7,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.Value;
 
+/**
+ * Class for holding play list details.
+ * @author lasithamukkunnathu
+ *
+ */
 @Entity
 @Table
 @Getter
