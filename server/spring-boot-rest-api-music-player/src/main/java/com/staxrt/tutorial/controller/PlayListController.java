@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.staxrt.tutorial.dao.PlayListDao;
@@ -24,9 +25,8 @@ import com.staxrt.tutorial.model.SongsModel;
  * @author lasithamukkunnathu
  *
  */
-@RestController
 @RequestMapping(value="/api/v2",produces = {"application/json"})
-
+@RestController
 public class PlayListController {
 	
 	/**
@@ -39,7 +39,7 @@ public class PlayListController {
 	 * Api for getting all play list.
 	 * @return : Object of PlayList class that contain data.
 	 */
-	@GetMapping("/getAllPlayList")
+	@RequestMapping(value = "/getAllPlayList", method = RequestMethod.GET)
 	public List<PlayList> getAllPlayList(){
 		return dao.getPlayListInfo();
 		
@@ -50,7 +50,7 @@ public class PlayListController {
 	 * Api for getting all play list.
 	 * @return : Object of PlayList class that contain data.
 	 */
-	@GetMapping("/getAllSongs")
+	@RequestMapping(value = "/getAllSongs", method = RequestMethod.GET)
 	public List<SongsModel> getAllSongs(){
 		return dao.getAllSongs();
 	
@@ -61,7 +61,7 @@ public class PlayListController {
 	 * @param id:Id for playlist
 	 * @return: Object of PlayList class that contain data.
 	 */
-	@GetMapping("/getPlayListById/{id}")
+	@RequestMapping(value = "/getPlayListById/{id}", method = RequestMethod.GET)
 	public List<PlayList> getPlayListById(@PathVariable int id){
 		System.out.println("PlayListController2");
 		return dao.getPlayListById(id);
@@ -71,7 +71,7 @@ public class PlayListController {
 	 * Api for getting all play list by providing specific id.
 	 * @return: Object of PlayList class that contain data.
 	 */
-	@GetMapping("/getPLWithSongs")
+	@RequestMapping(value = "/getPLWithSongs", method = RequestMethod.GET)
 	public List<PlayListWithSongs> getPLWithSongs(){
 		System.out.println("PlayListController2");
 		return dao.getPLWithSongs();
@@ -81,7 +81,7 @@ public class PlayListController {
 	 * Api for getting songs of Playlist.
 	 * @return: Object of PlayList class that contain data.
 	 */
-	@GetMapping("/getSongsOfPL/{id}")
+	@RequestMapping(value = "/getSongsOfPL/{id}", method = RequestMethod.GET)
 	public List<PlayListWithSongs> getSongsOfPL(@PathVariable int id){
 		System.out.println("PlayListController2");
 		return dao.getSongsOfPL(id);
@@ -91,7 +91,7 @@ public class PlayListController {
 	 * Api for creating a playlist.
 	 * @return: Object of PlayList class that contain data.
 	 */
-	@PostMapping("/createPL")
+	@RequestMapping(value = "/createPL", method = RequestMethod.POST)
 	public boolean createPlayList(@RequestBody String name){
 		System.out.println("PlayListController2");
 		return dao.createPlayList(name);	
@@ -101,7 +101,7 @@ public class PlayListController {
 	 * Api for deleting a playlist.
 	 * @return: Object of PlayList class that contain data.
 	 */
-	@DeleteMapping("/deletePlayList")
+	@RequestMapping(value = "/deletePlayList", method = RequestMethod.DELETE)
 	public boolean deletePlayList(int id){
 		System.out.println("PlayListController2");
 		return dao.deletePlayList(id);	
@@ -111,7 +111,7 @@ public class PlayListController {
 	 * Api for create song list.
 	 * @return: Object of PlayList class that contain data.
 	 */
-	@PostMapping("/createSong")
+	@RequestMapping(value = "/createSong", method = RequestMethod.POST)
 	public boolean createSong(@RequestBody SongsModel smodel){
 		System.out.println("PlayListController2");
 		return dao.createSong(smodel.songName,smodel.singer);	
@@ -121,7 +121,7 @@ public class PlayListController {
 	 * Api for deleting song from list.
 	 * @return: Object of PlayList class that contain data.
 	 */
-	@DeleteMapping("/deleteSong")
+	@RequestMapping(value = "/deleteSong", method = RequestMethod.DELETE)
 	public boolean deleteSong(int id){
 		System.out.println("PlayListController2");
 		return dao.deleteSong(id);	
@@ -131,7 +131,7 @@ public class PlayListController {
 	 * Api for add songs to playlist.
 	 * @return: Object of PlayList class that contain data.
 	 */
-	@PostMapping("/addSongToPL")
+	@RequestMapping(value = "/addSongToPL", method = RequestMethod.POST)
 	public boolean addSongToPL(@RequestBody SongPlayListModel spModel){
 		System.out.println("PlayListController2");
 		return dao.addSongToPL(spModel.playlistId,spModel.songId);	
@@ -141,7 +141,7 @@ public class PlayListController {
 	 * Api for remove songs to playlist.
 	 * @return: Object of PlayList class that contain data.
 	 */
-	@DeleteMapping("/removeSongFrmPL")
+	@RequestMapping(value = "/removeSongFrmPL", method = RequestMethod.DELETE)
 	public boolean removeSongFrmPL(int playListId, int songId){
 		System.out.println("PlayListController2");
 		return dao.removeSongFrmPL(playListId,songId);	
