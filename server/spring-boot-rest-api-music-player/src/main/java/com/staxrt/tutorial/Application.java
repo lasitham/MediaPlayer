@@ -22,7 +22,7 @@ public class Application {
    */
   public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
-	}
+  }
   /**
    * Docket Bean to configure Swagger2 for Spring Boot application.
    * @return: Docket
